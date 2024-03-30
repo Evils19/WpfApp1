@@ -1,4 +1,5 @@
-﻿public class  Program
+﻿
+public class  Program
 {
     static void Main(string[] args)
     {
@@ -7,54 +8,70 @@
        Cesar cesar = new Cesar("Testam algoritmul de criptare", key );
        cesar.Cripto();
        cesar.Decripto();
+       Console.WriteLine(cesar.Cripto());
+       Console.WriteLine(cesar.Decripto());
 
-       
+
     }
 }
 public class Cesar
 {
     private string? _skey;
     private int[] _key= new int[26];
-    
+ 
     private char[] _alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
     private string? _message;
 
     public Cesar(string message, string Skey)
     {
-        this._message = message;
-        this._skey = Skey;
+        _message = message;
+        _skey = Skey;
+    }
+    public Cesar(string message, string Skey, string Skey2)
+    {
+        _message = message;
+        _skey = Skey;
+      
     }
     public Cesar(string message, int[] Key)
-    {
-        this._message = message;
-        this._key = Key;
+    { 
+        _message = message;
+        _key = Key;
+    }   public Cesar(string message, int[] Key, int[] Key2)
+    { 
+        _message = message;
+        _key = Key;
+     
     }
- 
+
+   
+
     public int[] ConverKey(string Skey)
     {
         int k = 0;
         _skey = Skey;
         _skey = _skey.ToUpper();
-        for (int i = 0; i < _skey.Length; i++) // Parcurgem Skey și nu alfabetul
+        _key = new int[_skey.Length]; 
+        for (int i = 0; i < _skey.Length; i++) 
         {
-            for (int j = 0; j < _alphabetUpper.Length; j++) // Parcurgem alfabetul
+            for (int j = 0; j < _alphabetUpper.Length; j++) 
             {
-                if (k < Skey.Length && _alphabetUpper[j] == Skey[k]) 
+                if (k < Skey.Length && _alphabetUpper[j] == Skey[k])
                 {
-                    _key[k] = j; // Salvăm indexul literei în cheie
-                    k++; // Trecem la următoarea poziție din cheie
-                    break; // Ne oprim din căutarea în alfabet pentru caracterul curent din cheie
+                    _key[k] = j;
+                    k++; 
+                    break;
                 }
             }
         }
 
-  
         return _key;
     }
-public void Cripto()
+public string Cripto()
 {
     int[] key = (_skey == null) ? _key : ConverKey(_skey);
-    int keyIndex = 0; // Indexul pentru următoarea poziție din cheie
+    
+    int keyIndex = 0;
 
     string criptoMessage = "";
     foreach (char character in _message ?? "")
@@ -75,9 +92,9 @@ public void Cripto()
         }
     }
     _message = criptoMessage;
-    Console.WriteLine(_message);
+    return _message;
 }
-public void Decripto()
+public string Decripto()
 {
     string temp;
     int[] key = (_skey == null) ? _key : ConverKey(_skey);
@@ -95,7 +112,7 @@ public void Decripto()
            int alphabetIndex = Array.IndexOf(_alphabetUpper, upperCaseCharacter);
            if (alphabetIndex !=  _alphabetUpper.Length)
            {
-               temp = _alphabetUpper[(alphabetIndex - key[keyIndex]) % 26].ToString();
+               temp = _alphabetUpper[(alphabetIndex - key[keyIndex] + 26) % 26].ToString();
                decriptomesaj += temp;
                keyIndex = (keyIndex + 1) % key.Length;
                
@@ -105,6 +122,8 @@ public void Decripto()
        
    }
 
-   Console.WriteLine(decriptomesaj); 
+    _message = decriptomesaj;
+    return _message;
 }
+
 }
